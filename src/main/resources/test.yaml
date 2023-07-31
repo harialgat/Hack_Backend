@@ -1,0 +1,22 @@
+testCaseName: "what test"
+testCaseDescription: "my desc"
+
+steps:
+  - description : "xyz"
+    request:
+      url: "www/adadasa"
+      method: POST
+      headers:
+        key: value
+      data:
+        $: payload://c/a.json
+        $.token:
+    response:
+      validate:
+        code: 200
+        fields:
+          key : value
+        methods:
+          - list
+      save:
+        saveVar: keyVal //json path,
