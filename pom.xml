@@ -22,12 +22,12 @@
       <scope>test</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok-maven -->
-    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok-maven -->
+    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
     <dependency>
       <groupId>org.projectlombok</groupId>
-      <artifactId>lombok-maven</artifactId>
-      <version>1.18.20.0</version>
-      <type>pom</type>
+      <artifactId>lombok</artifactId>
+      <version>1.18.28</version>
+      <scope>provided</scope>
     </dependency>
 
 
