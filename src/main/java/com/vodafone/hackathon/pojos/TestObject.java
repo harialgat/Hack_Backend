@@ -14,5 +14,5 @@ public class TestObject {
     private String method;
     private String body;
     private String url;
-    private LinkedHashMap<String, Object> headers;
+    private LinkedHashMap<String, String > headers;
 }

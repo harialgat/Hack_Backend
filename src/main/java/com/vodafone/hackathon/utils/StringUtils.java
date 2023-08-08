@@ -1,7 +1,9 @@
 package com.vodafone.hackathon.utils;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StringUtils {
 
@@ -47,8 +49,15 @@ public class StringUtils {
 
     public static void main(String[] args) {
       String str =
-              "com.vofaone.me()";
-        System.out.println(getMethodName(str));
+              "com.vofaone.me(1,{ data})";
+       // System.out.println(getMethodName(str));
+        System.out.println(getVarsFromMethod(str));
+    }
+
+    public static List<String> getVarsFromMethod(String expression){
+        expression =  expression.substring(expression.indexOf("(")+1,expression.indexOf(")"));
+        String []arr = expression.split(",");
+        return Arrays.stream(arr).map(m ->m.replaceAll(" ","")).collect(Collectors.toList());
     }
 
 }
