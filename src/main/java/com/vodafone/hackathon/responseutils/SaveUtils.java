@@ -17,15 +17,21 @@ public class SaveUtils {
             //update the method parameters if it contains $ as method parameter
             String s = expression.substring(expression.indexOf("(") + 1, expression.indexOf(")"));
             String[] arr = s.split(",");
+            boolean responseFound = false;
             for (int i = 0; i < arr.length; i++) {
-                if (arr[i] == "$") {
-                    arr[i] = response;
+
+                if (arr[i].equals( "$")) {
+                    responseFound =  true;
+                    arr[i] = "\""+response+"\"";
                 }
             }
             String toBeReplaced = "";
             for (int i = 0; i < arr.length; i++) {
                 if (i != arr.length - 1) {
-                    toBeReplaced = toBeReplaced + arr[i] + ",";
+                    if (responseFound)
+                    toBeReplaced = toBeReplaced + arr[i] + "response,";
+                    else
+                        toBeReplaced = toBeReplaced + arr[i] + ",";
                 } else {
                     toBeReplaced = toBeReplaced + arr[i] + ")";
                 }
@@ -34,6 +40,7 @@ public class SaveUtils {
             int replaceIndex = expression.indexOf("(");
             expression = expression.substring(0, replaceIndex + 1) + toBeReplaced;
 
+            System.out.println("final expression " + expression);
             Object out = JavaMethodUtils.methodInvoker(expression);
             saved = out;
             DataLake.dataLake.put(key, out);

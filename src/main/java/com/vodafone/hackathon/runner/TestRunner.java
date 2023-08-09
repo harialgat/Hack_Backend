@@ -105,14 +105,18 @@ public class TestRunner {
             if (valuesToBeSaved != null) {
                 ExtentTest saveVars =  extentStep.createNode("Save Variables");
                 for (String key : valuesToBeSaved.keySet()) {
-
-                    Object out = SaveUtils.saveVars(actResponse.getResponse(), key, valuesToBeSaved.get(key));
-                    saveVars.log(Status.INFO,key +": " +out);
-
+                    try {
+                        Object out = SaveUtils.saveVars(actResponse.getResponse(), key, valuesToBeSaved.get(key));
+                        saveVars.log(Status.INFO, key + ": " + out);
+                    }catch (Exception e) {
+                       saveVars.log(Status.FAIL, valuesToBeSaved.get(key)+ " "  +e.getMessage() );
+                       throw new Exception(e.getMessage());
+                    }
                 }
             }
 
 
         }
+
     }
 }
