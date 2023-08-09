@@ -11,10 +11,10 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
-public class HttpOperation implements HttpCall {
+public class HttpOperation {
 
 
-    public ResponseEntity doPost(TestObject request) {
+    public static ResponseEntity doPost(TestObject request) {
         StringBuffer jsonString = new StringBuffer();
         ResponseEntity responseEntity = new ResponseEntity();
         try {
@@ -59,7 +59,7 @@ public class HttpOperation implements HttpCall {
 
     }
 
-    public ResponseEntity doGet(TestObject request) {
+    public static ResponseEntity doGet(TestObject request) {
         StringBuffer jsonString = new StringBuffer();
         ResponseEntity responseEntity = new ResponseEntity();
         try {
@@ -100,7 +100,7 @@ public class HttpOperation implements HttpCall {
         }
     }
 
-    public ResponseEntity doPut(TestObject request) {
+    public static  ResponseEntity doPut(TestObject request) {
         StringBuffer jsonString = new StringBuffer();
         ResponseEntity responseEntity = new ResponseEntity();
         try {
@@ -143,11 +143,11 @@ public class HttpOperation implements HttpCall {
         }
     }
 
-    public ResponseEntity doPatch(TestObject request) {
+    public static ResponseEntity doPatch(TestObject request) {
         return null;
     }
 
-    public ResponseEntity doDelete(TestObject request) {
+    public static ResponseEntity doDelete(TestObject request) {
         StringBuffer jsonString = new StringBuffer();
         ResponseEntity responseEntity = new ResponseEntity();
         try {
@@ -188,5 +188,26 @@ public class HttpOperation implements HttpCall {
         } catch (Exception e) {
             throw new RuntimeException("delete call failed");
         }
+    }
+
+    public static ResponseEntity restCall(TestObject testObject){
+        String method =  testObject.getMethod();
+        ResponseEntity e = null;
+        switch (method){
+            case "POST" :
+               e= doPost(testObject);
+                break;
+            case "GET" :
+               e= doGet(testObject);
+                break;
+            case "PUT":
+               e= doPut(testObject);
+                break;
+            case "DELETE":
+               e= doDelete(testObject);
+               break;
+        }
+        return e;
+
     }
 }

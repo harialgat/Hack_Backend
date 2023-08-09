@@ -11,6 +11,6 @@ import java.util.*;
 @NoArgsConstructor
 public class Testcase {
 private String testCaseName;
-private String testCasteDescription;
+private String testCaseDescription;
 private List<TestStep> steps;
 }

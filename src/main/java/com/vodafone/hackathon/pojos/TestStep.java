@@ -12,4 +12,5 @@ import lombok.Setter;
 public class TestStep {
     private Request request;
     private Response response;
+    private String description;
 }

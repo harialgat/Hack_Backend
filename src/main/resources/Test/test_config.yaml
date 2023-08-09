@@ -1,0 +1,16 @@
+testCaseName: "test to get the configuration of device"
+testCaseDescription: "this test gets the configuration"
+
+steps:
+  - description : "get STB Config"
+    request:
+      url: "https://185.dms-atp2.ott.kaltura.com/getconfig?username=dms&password=tvinci&appname=com.vodafone.wit.phone&cver=0.2.4.10&platform=IOS&udid=b3199c2f-a96c-44ac-8b7d-22ee15ada617"
+      method: GET
+      data:
+    response:
+      validate:
+        code: 200
+      save:
+        udid: $.udid
+        platform: $..id
+
