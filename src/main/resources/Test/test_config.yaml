@@ -10,7 +10,10 @@ steps:
     response:
       validate:
         code: 200
+        fields:
+          $.udid: b3199c2f-a96c-44ac-8b7d-22ee15ada617
       save:
         udid: $.udid
         platform: $..id
+        data:
 

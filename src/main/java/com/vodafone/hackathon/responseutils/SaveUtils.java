@@ -5,11 +5,13 @@ import com.vodafone.hackathon.jsonops.JsonUtils;
 import com.vodafone.hackathon.reflection.JavaMethodUtils;
 
 public class SaveUtils {
-    public static void saveVars(String response, String key, String expression) throws Exception {
+    public static Object saveVars(String response, String key, String expression) throws Exception {
         //either json path
         //or method
+        Object saved = null;
         if (expression.contains("$") && (expression.indexOf("$") == 0)) {
             Object res = JsonUtils.getJsonPathVal(response, expression);
+            saved =  res;
             DataLake.dataLake.put(key, res);
         } else {
             //update the method parameters if it contains $ as method parameter
@@ -33,7 +35,9 @@ public class SaveUtils {
             expression = expression.substring(0, replaceIndex + 1) + toBeReplaced;
 
             Object out = JavaMethodUtils.methodInvoker(expression);
+            saved = out;
             DataLake.dataLake.put(key, out);
         }
+        return saved;
     }
 }

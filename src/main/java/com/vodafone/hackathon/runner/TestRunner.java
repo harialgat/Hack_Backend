@@ -23,7 +23,9 @@ public class TestRunner {
 
         List<TestStep> steps = testcase.getSteps();
         for (int i = 0; i < steps.size(); i++) {
+
             TestStep currentStep = steps.get(i);
+            ExtentTest extentStep =  extentTest.createNode(currentStep.getDescription());
             Request request = currentStep.getRequest();
             LinkedHashMap<String, String> headers = request.getHeaders();
             String body = null;
@@ -34,12 +36,12 @@ public class TestRunner {
                 headers = new LinkedHashMap<>();
             }
             String url = request.getUrl();
-            extentTest.createNode("URL").log(Status.INFO, url);
+            extentStep.createNode("URL").log(Status.INFO, url);
             String method = request.getMethod();
-            extentTest.createNode("Method").log(Status.INFO, method);
+
             TestObject testObject = new TestObject();
             testObject.setHeaders(headers);
-            extentTest.createNode("payload").log(Status.INFO, MarkupHelper.createCodeBlock(body));
+            extentStep.createNode("payload").log(Status.INFO, MarkupHelper.createCodeBlock(body));
             testObject.setBody(body);
             testObject.setUrl(url);
             testObject.setMethod(method);
@@ -47,25 +49,28 @@ public class TestRunner {
             try {
                 actResponse = HttpOperation.restCall(testObject);
             } catch (Exception e) {
-                extentTest.createNode("Test Failed Cause ").log(Status.ERROR, e.getMessage());
+                extentStep.createNode("Test Failed Cause ").log(Status.ERROR, e.getMessage());
                 throw new RuntimeException(e.getMessage());
             }
             System.out.println("response code" + actResponse.getCode());
             System.out.println("response " + actResponse.getResponse());
-            extentTest.createNode("Response").log(Status.INFO, MarkupHelper.createCodeBlock(actResponse.getResponse()));
+            extentStep.createNode("Response").log(Status.INFO, MarkupHelper.createCodeBlock(actResponse.getResponse()));
             //validations
             Response expectedResponse = currentStep.getResponse();
             Validate validate = expectedResponse.getValidate();
             int expectedCode = validate.getCode();
+            ExtentTest validationsExtent =  extentStep.createNode("Validations");
 
             try {
                 //put first validation on responsse code
                 ValidationUtils.validateByCode(actResponse.getCode(), expectedCode);
-                extentTest.log(Status.PASS, "Response codes matched");
+                validationsExtent.log(Status.PASS, "Response codes matched");
             } catch (Exception e) {
-                extentTest.log(Status.FAIL, e.getMessage());
+                validationsExtent.log(Status.FAIL, e.getMessage());
                 throw new Exception(e.getMessage());
             }
+
+
 
             // check if validate by fields is there or not
             LinkedHashMap<String, ?> fields = validate.getFields();
@@ -73,10 +78,10 @@ public class TestRunner {
                 for (String key : fields.keySet()) {
                     try {
                         ValidationUtils.validateByField(actResponse.getResponse(), key, fields.get(key));
-                        extentTest.log(Status.PASS, key);
+                        validationsExtent.log(Status.PASS, key);
                     } catch (Exception e) {
 
-                        extentTest.log(Status.FAIL, "value to the expected field did not match" + key);
+                        validationsExtent.log(Status.FAIL, "value to the expected field did not match" + key);
                         throw new Exception(e.getMessage());
                     }
                 }
@@ -86,9 +91,9 @@ public class TestRunner {
                 for (String methods : methodsValidation) {
                     try {
                         ValidationUtils.validateByMethod(methods);
-                        extentTest.log(Status.PASS, methods);
+                        validationsExtent.log(Status.PASS, methods);
                     } catch (Exception e) {
-                        extentTest.log(Status.FAIL, "assertion error" + methods);
+                        validationsExtent.log(Status.FAIL, "assertion error" + methods);
                         throw new Exception(e.getMessage());
                     }
                 }
@@ -96,10 +101,13 @@ public class TestRunner {
 
             //save vars if any
             LinkedHashMap<String, String> valuesToBeSaved = expectedResponse.getSave();
+
             if (valuesToBeSaved != null) {
+                ExtentTest saveVars =  extentStep.createNode("Save Variables");
                 for (String key : valuesToBeSaved.keySet()) {
 
-                    SaveUtils.saveVars(actResponse.getResponse(), key, valuesToBeSaved.get(key));
+                    Object out = SaveUtils.saveVars(actResponse.getResponse(), key, valuesToBeSaved.get(key));
+                    saveVars.log(Status.INFO,key +": " +out);
 
                 }
             }
