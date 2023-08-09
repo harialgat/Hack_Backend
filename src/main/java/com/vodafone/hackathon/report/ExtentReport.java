@@ -28,6 +28,7 @@ public class ExtentReport {
         htmlReporter.config().setTestViewChartLocation(ChartLocation.TOP);
         htmlReporter.config().setTheme(Theme.STANDARD);
 
+
     }
 
     /**
