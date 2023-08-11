@@ -25,7 +25,7 @@ public class TestRunner {
         for (int i = 0; i < steps.size(); i++) {
 
             TestStep currentStep = steps.get(i);
-            ExtentTest extentStep =  extentTest.createNode(currentStep.getDescription());
+            ExtentTest extentStep = extentTest.createNode("<b>" + currentStep.getDescription() + "</b>");
             Request request = currentStep.getRequest();
             LinkedHashMap<String, String> headers = request.getHeaders();
             String body = null;
@@ -59,7 +59,7 @@ public class TestRunner {
             Response expectedResponse = currentStep.getResponse();
             Validate validate = expectedResponse.getValidate();
             int expectedCode = validate.getCode();
-            ExtentTest validationsExtent =  extentStep.createNode("Validations");
+            ExtentTest validationsExtent = extentStep.createNode("Validations");
 
             try {
                 //put first validation on responsse code
@@ -69,7 +69,6 @@ public class TestRunner {
                 validationsExtent.log(Status.FAIL, e.getMessage());
                 throw new Exception(e.getMessage());
             }
-
 
 
             // check if validate by fields is there or not
@@ -90,9 +89,9 @@ public class TestRunner {
             if (methodsValidation != null && methodsValidation.size() > 0) {
                 for (String methods : methodsValidation) {
                     try {
-                        ValidationUtils.validateByMethod(methods);
+                        ValidationUtils.validateByMethod(methods, actResponse.getResponse());
                         validationsExtent.log(Status.PASS, methods);
-                    } catch (Exception e) {
+                    } catch (AssertionError | RuntimeException e) {
                         validationsExtent.log(Status.FAIL, "assertion error" + methods);
                         throw new Exception(e.getMessage());
                     }
@@ -103,14 +102,14 @@ public class TestRunner {
             LinkedHashMap<String, String> valuesToBeSaved = expectedResponse.getSave();
 
             if (valuesToBeSaved != null) {
-                ExtentTest saveVars =  extentStep.createNode("Save Variables");
+                ExtentTest saveVars = extentStep.createNode("Save Variables");
                 for (String key : valuesToBeSaved.keySet()) {
                     try {
                         Object out = SaveUtils.saveVars(actResponse.getResponse(), key, valuesToBeSaved.get(key));
                         saveVars.log(Status.INFO, key + ": " + out);
-                    }catch (Exception e) {
-                       saveVars.log(Status.FAIL, valuesToBeSaved.get(key)+ " "  +e.getMessage() );
-                       throw new Exception(e.getMessage());
+                    } catch (Exception e) {
+                        saveVars.log(Status.FAIL, valuesToBeSaved.get(key) + " " + e.getMessage());
+                        throw new Exception(e.getMessage());
                     }
                 }
             }

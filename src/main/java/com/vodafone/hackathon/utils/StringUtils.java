@@ -56,7 +56,14 @@ public class StringUtils {
 
     public static List<String> getVarsFromMethod(String expression){
         expression =  expression.substring(expression.indexOf("(")+1,expression.indexOf(")"));
-        String []arr = expression.split(",");
+        String[]arr;
+        if(expression.contains("\"{")&&expression.contains("}\"") || expression.contains("\"[")&&expression.contains("]\"")){
+            arr = expression.split("response,");
+        }else{
+            arr = expression.split(",");
+        }
+
+
         return Arrays.stream(arr).map(m ->m.replaceAll(" ","")).collect(Collectors.toList());
     }
 

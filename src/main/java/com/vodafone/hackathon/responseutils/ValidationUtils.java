@@ -40,9 +40,37 @@ public class ValidationUtils {
         }
     }
 
-    public static void validateByMethod(String method) throws Exception {
+    public static void validateByMethod(String expression, String response) throws AssertionError, RuntimeException {
+        String s = expression.substring(expression.indexOf("(") + 1, expression.indexOf(")"));
+        String[] arr = s.split(",");
+        boolean responseFound = false;
+        for (int i = 0; i < arr.length; i++) {
+
+            if (arr[i].equals( "$")) {
+                responseFound =  true;
+                arr[i] = "\""+response+"\"";
+            }
+        }
+        String toBeReplaced = "";
+        for (int i = 0; i < arr.length; i++) {
+            if (i != arr.length - 1) {
+                if (responseFound)
+                    toBeReplaced = toBeReplaced + arr[i] + "response,";
+                else
+                    toBeReplaced = toBeReplaced + arr[i] + ",";
+            } else {
+                toBeReplaced = toBeReplaced + arr[i] + ")";
+            }
+        }
+
+        int replaceIndex = expression.indexOf("(");
+        expression = expression.substring(0, replaceIndex + 1) + toBeReplaced;
+
+        System.out.println("final expression " + expression);
         try {
-            JavaMethodUtils.methodInvoker(method);
+            JavaMethodUtils.methodInvoker(expression);
+        }catch (AssertionError e){
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

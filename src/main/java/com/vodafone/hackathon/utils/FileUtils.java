@@ -6,6 +6,7 @@ import java.util.*;
 public class FileUtils {
     public static List<File> testFiles =  new ArrayList<>();
     public static List<File> javaFiles =  new ArrayList<>();
+
     public static void collectJavaFiles(String path) {
         File root = new File(path);
         File[] list = root.listFiles();
@@ -35,6 +36,14 @@ public class FileUtils {
                 testFiles.add(f.getAbsoluteFile());
             }
         }
+    }
+
+    public static void main(String[] args) {
+        List<String> a =  new ArrayList<>();
+        a.add("harish");
+        List b =a;
+        b.remove("harish");
+        System.out.println(a.size());
     }
 
 
