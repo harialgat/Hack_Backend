@@ -3,10 +3,12 @@ package com.vodafone.hackathon.runner;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
+import com.vodafone.hackathon.datalake.DataLake;
 import com.vodafone.hackathon.jsonops.JsonUtils;
 import com.vodafone.hackathon.pojos.*;
 import com.vodafone.hackathon.report.ExtentReport;
 import com.vodafone.hackathon.request.HttpOperation;
+import com.vodafone.hackathon.requestutils.ResolveRequest;
 import com.vodafone.hackathon.responseutils.SaveUtils;
 import com.vodafone.hackathon.responseutils.ValidationUtils;
 
@@ -16,6 +18,10 @@ import java.util.List;
 public class TestRunner {
 
     public static void runTest(Testcase testcase) throws Exception {
+
+        //for every test create a new Data Lake
+        new DataLake();
+
         System.out.println("running test:" + testcase.getTestCaseName());
         System.out.println("test Description:" + testcase.getTestCaseDescription());
         ExtentTest extentTest = ExtentReport.extent.createTest(testcase.getTestCaseName(), testcase.getTestCaseDescription());
@@ -28,6 +34,7 @@ public class TestRunner {
             ExtentTest extentStep = extentTest.createNode("<b>" + currentStep.getDescription() + "</b>");
             Request request = currentStep.getRequest();
             LinkedHashMap<String, String> headers = request.getHeaders();
+            headers = ResolveRequest.resolveHeaders(headers);
             String body = null;
             if (request.getData() != null) {
                 body = JsonUtils.resolveBody(request.getData());
