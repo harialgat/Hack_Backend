@@ -1,0 +1,7 @@
+{
+  "apiVersion": "{{apiVersion}}",
+  "partnerId": "{{GroupID}}",
+  "username": "NONE",
+  "password": "NONE",
+  "udid": "452e1874-d7aa-4e37-a1d4-17471b38e517"
+}
