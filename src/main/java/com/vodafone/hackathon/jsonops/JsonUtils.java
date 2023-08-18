@@ -19,6 +19,9 @@ import java.util.Set;
 public class JsonUtils {
 
     public static String updateJsonString(String currentString, String jsonPath, Object newValue) {
+        System.out.println("currentString "  + currentString );
+        System.out.println("jsonPath :  " + jsonPath );
+        System.out.println("new value " + newValue);
         return JsonPath.parse(currentString).set(jsonPath, newValue).jsonString();
     }
 
@@ -29,9 +32,9 @@ public class JsonUtils {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader(path));
         String root = jsonObject.toJSONString();
-
+        System.out.println(root);
         for (String key : keySet) {
-            if (key == "$") {
+            if (key.equals("$") ){
                 continue;
             } else {
                 //resolve the variables
@@ -46,6 +49,7 @@ public class JsonUtils {
                         String var = StringUtils.getStringBetween(cString);
                         root = updateJsonString(root, key, DataLake.dataLake.get(var));
                     } else {
+                        System.out.println("in else part");
                         root = updateJsonString(root, key, cString);
                     }
                 } else {
@@ -53,6 +57,7 @@ public class JsonUtils {
                 }
             }
         }
+
 
         return root;
     }

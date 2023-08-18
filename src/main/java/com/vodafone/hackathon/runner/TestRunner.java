@@ -38,6 +38,8 @@ public class TestRunner {
             String body = null;
             if (request.getData() != null) {
                 body = JsonUtils.resolveBody(request.getData());
+                System.out.println("resolved body " ) ;
+                System.out.println(body);
             }
             if (headers == null) {
                 headers = new LinkedHashMap<>();

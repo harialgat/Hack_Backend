@@ -137,4 +137,7 @@ public class Test {
         System.out.println(getTimeStamp(0));
 
     }
+    public static Integer getId(Integer i){
+        return 184;
+    }
 }
