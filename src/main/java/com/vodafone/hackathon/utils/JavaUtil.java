@@ -17,8 +17,11 @@ import java.util.*;
 public class JavaUtil {
     public static URLClassLoader classLoader;
 
-    public static void resolveExternalDependencies(List<String> centralDependencies) {
+    public static void resolveExternalDependencies(String externalDepsPath) {
+
         //I have to get these from dependency file;
+
+        List<String> centralDependencies = YamlUtils.getExternalDeps(externalDepsPath);
         //  log.info("Resolve Dependencies function called ");
         List<Path> libraries = new ArrayList<>();
 
@@ -50,7 +53,7 @@ public class JavaUtil {
             compileJavaFiles(FileUtils.javaFiles);
         } catch (Exception e) {
 
-
+            System.out.println("exception while compiling external code");
         }
         try {
             urlClassLoader(libraries);
@@ -110,6 +113,7 @@ public class JavaUtil {
             throw new RuntimeException(e);
         }
     }
+
 
 
 

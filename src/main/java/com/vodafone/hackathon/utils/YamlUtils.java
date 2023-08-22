@@ -2,6 +2,7 @@ package com.vodafone.hackathon.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.vodafone.hackathon.pojos.Dependencies;
 import com.vodafone.hackathon.pojos.Testcase;
 
 import java.io.File;
@@ -28,5 +29,18 @@ public class YamlUtils {
         }
         return testcase;
 
+    }
+
+    public static List<String> getExternalDeps(String externalDepPath) {
+        List<String> externalDeps = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        mapper.findAndRegisterModules();
+        Dependencies dependencies = null;
+        try {
+            dependencies = mapper.readValue(new File(externalDepPath), Dependencies.class);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return dependencies.getDependencies();
     }
 }
