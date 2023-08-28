@@ -58,7 +58,7 @@ public class Test {
                     try {
                         data.put("seasonNumber", metas.get("seasonNumber").getAsJsonObject().get("value").getAsString());
                     } catch (Exception e) {
-                        data.put("seasonNumber",null);
+                        data.put("seasonNumber", null);
                     }
                     data.put("latestOccur", metas.get("latestOccur").getAsJsonObject().get("value").getAsString());
                     seriesEventData.add(data);
@@ -110,7 +110,7 @@ public class Test {
             JsonObject jsonObject = new JsonObject();
             for (String key : data.keySet()) {
 
-                if (data.get(key)!=null && data.get(key).getClass().getName().contains("Integer")) {
+                if (data.get(key) != null && data.get(key).getClass().getName().contains("Integer")) {
                     jsonObject.addProperty(key, Integer.valueOf((int) data.get(key)));
                 } else {
                     jsonObject.addProperty(key, String.valueOf(data.get(key)));
@@ -137,7 +137,13 @@ public class Test {
         System.out.println(getTimeStamp(0));
 
     }
-    public static Integer getId(Integer i){
+
+    public static Integer getId(Integer i) {
         return 184;
+    }
+
+    @org.testng.annotations.Test
+    public void myTest() {
+        System.out.println("harish");
     }
 }
