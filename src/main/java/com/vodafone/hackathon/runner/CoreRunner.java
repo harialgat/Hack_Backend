@@ -10,7 +10,7 @@ import java.io.File;
 import java.util.List;
 
 public class CoreRunner {
-    public static void main(String[] args) {
+    public static void main() {
 
         //resolve external Dependencies
         JavaUtil.resolveExternalDependencies(Configuration.externalDependencyPath);

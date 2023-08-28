@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.vodafone.hackathon.runner.CoreRunner;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -144,6 +145,6 @@ public class Test {
 
     @org.testng.annotations.Test
     public void myTest() {
-        System.out.println("harish");
+        CoreRunner.main();
     }
 }
