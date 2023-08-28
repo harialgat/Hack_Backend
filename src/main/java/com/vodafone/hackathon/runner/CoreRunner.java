@@ -13,7 +13,7 @@ public class CoreRunner {
     public static void main() {
 
         //resolve external Dependencies
-        JavaUtil.resolveExternalDependencies(Configuration.externalDependencyPath);
+     //   JavaUtil.resolveExternalDependencies(Configuration.externalDependencyPath);
 
         //collect the java files
         FileUtils.collectJavaFiles(Configuration.externalCodePath);
