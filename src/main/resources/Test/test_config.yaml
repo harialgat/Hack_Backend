@@ -11,31 +11,25 @@ steps:
       validate:
         code: 200
         fields:
-          $.udid: '8816279287'
+          $.udid: '8816279286'
         methods:
       save:
         udid: $.udid
         platform: $..id
         data: com.vodafone.hackathon.Test.getData("121",1)
 
-  - description: "Get authentication token"
+  - description: "get STB Config2"
     request:
-      url: "https://185.api-atp2.ott.kaltura.com/api_v3/service/OTTUser/action/login"
-      method: POST
-      headers:
-        Content-Type: application/json
+      url: "https://185.dms-atp2.ott.kaltura.com/getconfig?username=dms&password=tvinci&appname=com.kaltura.vodafone.pt.stb&cver=6.1.7300.08730005&platform=STB&udid=8816279286"
+      method: GET
       data:
-        $: payload:/src/main/resources/login.json
-        $.apiVersion: '5.1'
-        $.partnerId: method:com.vodafone.hackathon.Test.getId(0)
-        $.username: 'ATP_SA_QA441'
-        $.password: '123456'
-        $.udid: '{udid}'
     response:
       validate:
         code: 200
         fields:
-          "$.result.user.objectType": 'KalturaOTTUser'
+          $.udid: '8816279287'
+        methods:
       save:
-        ks: $.result.loginSession.ks
-        siteGuid: $.result.user.id
+        udid: $.udid
+        platform: $..id
+        data: com.vodafone.hackathon.Test.getData("121",1)
